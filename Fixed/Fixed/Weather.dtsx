@@ -1,0 +1,1168 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/2/2022 12:26:15 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-AHRMNEJR"
+  DTS:CreatorName="LAPTOP-AHRMNEJR\adoni"
+  DTS:DTSID="{B7DE5555-8E9E-4BC5-9427-A3C8FD6E50D2}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="Weather"
+  DTS:PackageType="5"
+  DTS:VersionBuild="6"
+  DTS:VersionGUID="{AE3E1A9D-5D4A-4043-9380-9A1569A624C6}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Excel Connection Manager]"
+      DTS:CreationName="EXCEL"
+      DTS:DTSID="{8D18DFC4-1B76-459A-A8EE-0C9528CACFD2}"
+      DTS:ObjectName="Excel Connection Manager">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="0"
+          DTS:ConnectRetryInterval="0"
+          DTS:ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\adoni\Desktop\project idh\wt.xlsx;Extended Properties=&quot;Excel 12.0 XML;HDR=YES&quot;;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[LAPTOP-AHRMNEJR\DATABAZ.StarSchema]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{B0E4A87E-D228-470A-A9CF-6F8F20A2C23B}"
+      DTS:ObjectName="LAPTOP-AHRMNEJR\DATABAZ.StarSchema">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=LAPTOP-AHRMNEJR\DATABAZ;Initial Catalog=StarSchema;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clear Weather Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{AD10EBDB-B2B7-4F55-B0E3-79656BD8C774}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clear Weather Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B0E4A87E-D228-470A-A9CF-6F8F20A2C23B}"
+          SQLTask:SqlStatementSource="DELETE FROM Weather&#xA;DBCC CHECKIDENT ('StarSchema.dbo.Weather', RESEED, 0)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Data Into Table"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{CD8A1AFA-587B-4493-A406-BA2860CF137C}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Data Into Table"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Insert Weather related columns into Weather Table"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Weather]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LAPTOP-AHRMNEJR\DATABAZ.StarSchema]"
+                  connectionManagerRefId="Package.ConnectionManagers[LAPTOP-AHRMNEJR\DATABAZ.StarSchema]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].Columns[HiTemp]"
+                      cachedDataType="r8"
+                      cachedName="HiTemp"
+                      externalMetadataColumnId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[hiTemp]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiTemp]" />
+                    <inputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].Columns[LowTemp]"
+                      cachedDataType="r8"
+                      cachedName="LowTemp"
+                      externalMetadataColumnId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[lowTemp]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[LowTemp]" />
+                    <inputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].Columns[HeatIndex]"
+                      cachedDataType="r8"
+                      cachedName="HeatIndex"
+                      externalMetadataColumnId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[heatIndex]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HeatIndex]" />
+                    <inputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].Columns[Bar]"
+                      cachedDataType="r8"
+                      cachedName="Bar"
+                      externalMetadataColumnId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[bar]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Bar]" />
+                    <inputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].Columns[Rain]"
+                      cachedDataType="r8"
+                      cachedName="Rain"
+                      externalMetadataColumnId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[rainfall]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Rain]" />
+                    <inputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].Columns[TempOut]"
+                      cachedDataType="r8"
+                      cachedName="TempOut"
+                      externalMetadataColumnId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[avgTemp]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[TempOut]" />
+                    <inputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].Columns[OutHum]"
+                      cachedDataType="r8"
+                      cachedName="OutHum"
+                      externalMetadataColumnId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[humidity]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[OutHum]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[IdWeather]"
+                      dataType="i4"
+                      name="IdWeather" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[hiTemp]"
+                      dataType="numeric"
+                      name="hiTemp"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[lowTemp]"
+                      dataType="numeric"
+                      name="lowTemp"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[humidity]"
+                      dataType="i4"
+                      name="humidity" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[heatIndex]"
+                      dataType="numeric"
+                      name="heatIndex"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[bar]"
+                      dataType="numeric"
+                      name="bar"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[rainfall]"
+                      dataType="numeric"
+                      name="rainfall"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input].ExternalColumns[avgTemp]"
+                      dataType="numeric"
+                      name="avgTemp"
+                      precision="18" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Data Into Table\Load Dataset"
+              componentClassID="Microsoft.ExcelSource"
+              contactInfo="Excel Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Excel Source"
+              name="Load Dataset"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">'Weather Data$'</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mapping from parameters in the SQL command to variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Data Into Table\Load Dataset.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Excel Connection Manager]"
+                  connectionManagerRefId="Package.ConnectionManagers[Excel Connection Manager]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output]"
+                  name="Excel Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Site]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Site]"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Site]"
+                      name="Site"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Date]"
+                      dataType="date"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Date]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Date]"
+                      name="Date"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Month]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Month]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Month]"
+                      name="Month"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Time]"
+                      dataType="date"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Time]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Time]"
+                      name="Time"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Hour]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Hour]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Hour]"
+                      name="Hour"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[TempOut]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[TempOut]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[TempOut]"
+                      name="TempOut"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiTemp]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiTemp]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiTemp]"
+                      name="HiTemp"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[LowTemp]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[LowTemp]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[LowTemp]"
+                      name="LowTemp"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[OutHum]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[OutHum]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[OutHum]"
+                      name="OutHum"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[DewPt]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[DewPt]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[DewPt]"
+                      name="DewPt"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindSpeed]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindSpeed]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindSpeed]"
+                      name="WindSpeed"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindDir]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindDir]"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindDir]"
+                      name="WindDir"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindRun]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindRun]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindRun]"
+                      name="WindRun"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiSpeed]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiSpeed]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiSpeed]"
+                      name="HiSpeed"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiDir]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiDir]"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiDir]"
+                      name="HiDir"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindChill]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindChill]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindChill]"
+                      name="WindChill"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HeatIndex]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HeatIndex]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HeatIndex]"
+                      name="HeatIndex"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[THWIndex]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[THWIndex]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[THWIndex]"
+                      name="THWIndex"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[THSWIndex]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[THSWIndex]"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[THSWIndex]"
+                      name="THSWIndex"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Bar]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Bar]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Bar]"
+                      name="Bar"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Rain]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Rain]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[Rain]"
+                      name="Rain"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[RainRate]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[RainRate]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[RainRate]"
+                      name="RainRate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[SolarRad]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[SolarRad]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[SolarRad]"
+                      name="SolarRad"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[SolarEnergy]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[SolarEnergy]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[SolarEnergy]"
+                      name="SolarEnergy"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiSolarRad]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiSolarRad]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HiSolarRad]"
+                      name="HiSolarRad"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HeatD-D]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HeatD-D]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[HeatD-D]"
+                      name="HeatD-D"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[CoolD-D]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[CoolD-D]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[CoolD-D]"
+                      name="CoolD-D"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InTemp]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InTemp]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InTemp]"
+                      name="InTemp"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InHum]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InHum]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InHum]"
+                      name="InHum"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InDew]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InDew]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InDew]"
+                      name="InDew"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InHeat]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InHeat]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InHeat]"
+                      name="InHeat"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InEMC]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InEMC]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InEMC]"
+                      name="InEMC"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InAirDensity]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InAirDensity]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[InAirDensity]"
+                      name="InAirDensity"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[ET]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[ET]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[ET]"
+                      name="ET"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindSamp]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindSamp]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindSamp]"
+                      name="WindSamp"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindTx]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindTx]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[WindTx]"
+                      name="WindTx"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[ISSRecept]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[ISSRecept]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[ISSRecept]"
+                      name="ISSRecept"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[ArcInt]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[ArcInt]"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].Columns[ArcInt]"
+                      name="ArcInt"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Site]"
+                      dataType="wstr"
+                      length="255"
+                      name="Site" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Date]"
+                      dataType="date"
+                      name="Date" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Month]"
+                      dataType="r8"
+                      name="Month" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Time]"
+                      dataType="date"
+                      name="Time" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Hour]"
+                      dataType="r8"
+                      name="Hour" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[TempOut]"
+                      dataType="r8"
+                      name="TempOut" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiTemp]"
+                      dataType="r8"
+                      name="HiTemp" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[LowTemp]"
+                      dataType="r8"
+                      name="LowTemp" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[OutHum]"
+                      dataType="r8"
+                      name="OutHum" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[DewPt]"
+                      dataType="r8"
+                      name="DewPt" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindSpeed]"
+                      dataType="r8"
+                      name="WindSpeed" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindDir]"
+                      dataType="wstr"
+                      length="255"
+                      name="WindDir" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindRun]"
+                      dataType="r8"
+                      name="WindRun" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiSpeed]"
+                      dataType="r8"
+                      name="HiSpeed" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiDir]"
+                      dataType="wstr"
+                      length="255"
+                      name="HiDir" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindChill]"
+                      dataType="r8"
+                      name="WindChill" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HeatIndex]"
+                      dataType="r8"
+                      name="HeatIndex" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[THWIndex]"
+                      dataType="r8"
+                      name="THWIndex" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[THSWIndex]"
+                      dataType="wstr"
+                      length="255"
+                      name="THSWIndex" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Bar]"
+                      dataType="r8"
+                      name="Bar" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[Rain]"
+                      dataType="r8"
+                      name="Rain" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[RainRate]"
+                      dataType="r8"
+                      name="RainRate" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[SolarRad]"
+                      dataType="r8"
+                      name="SolarRad" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[SolarEnergy]"
+                      dataType="r8"
+                      name="SolarEnergy" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HiSolarRad]"
+                      dataType="r8"
+                      name="HiSolarRad" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[HeatD-D]"
+                      dataType="r8"
+                      name="HeatD-D" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[CoolD-D]"
+                      dataType="r8"
+                      name="CoolD-D" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InTemp]"
+                      dataType="r8"
+                      name="InTemp" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InHum]"
+                      dataType="r8"
+                      name="InHum" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InDew]"
+                      dataType="r8"
+                      name="InDew" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InHeat]"
+                      dataType="r8"
+                      name="InHeat" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InEMC]"
+                      dataType="r8"
+                      name="InEMC" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[InAirDensity]"
+                      dataType="r8"
+                      name="InAirDensity" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[ET]"
+                      dataType="r8"
+                      name="ET" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindSamp]"
+                      dataType="r8"
+                      name="WindSamp" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[WindTx]"
+                      dataType="r8"
+                      name="WindTx" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[ISSRecept]"
+                      dataType="r8"
+                      name="ISSRecept" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output].ExternalColumns[ArcInt]"
+                      dataType="r8"
+                      name="ArcInt" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output]"
+                  isErrorOut="true"
+                  name="Excel Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Site]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Site]"
+                      name="Site" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Date]"
+                      dataType="date"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Date]"
+                      name="Date" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Month]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Month]"
+                      name="Month" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Time]"
+                      dataType="date"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Time]"
+                      name="Time" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Hour]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Hour]"
+                      name="Hour" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[TempOut]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[TempOut]"
+                      name="TempOut" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiTemp]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiTemp]"
+                      name="HiTemp" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[LowTemp]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[LowTemp]"
+                      name="LowTemp" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[OutHum]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[OutHum]"
+                      name="OutHum" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[DewPt]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[DewPt]"
+                      name="DewPt" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindSpeed]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindSpeed]"
+                      name="WindSpeed" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindDir]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindDir]"
+                      name="WindDir" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindRun]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindRun]"
+                      name="WindRun" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiSpeed]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiSpeed]"
+                      name="HiSpeed" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiDir]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiDir]"
+                      name="HiDir" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindChill]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindChill]"
+                      name="WindChill" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HeatIndex]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HeatIndex]"
+                      name="HeatIndex" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[THWIndex]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[THWIndex]"
+                      name="THWIndex" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[THSWIndex]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[THSWIndex]"
+                      name="THSWIndex" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Bar]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Bar]"
+                      name="Bar" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Rain]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[Rain]"
+                      name="Rain" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[RainRate]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[RainRate]"
+                      name="RainRate" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[SolarRad]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[SolarRad]"
+                      name="SolarRad" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[SolarEnergy]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[SolarEnergy]"
+                      name="SolarEnergy" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiSolarRad]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HiSolarRad]"
+                      name="HiSolarRad" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HeatD-D]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[HeatD-D]"
+                      name="HeatD-D" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[CoolD-D]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[CoolD-D]"
+                      name="CoolD-D" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InTemp]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InTemp]"
+                      name="InTemp" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InHum]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InHum]"
+                      name="InHum" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InDew]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InDew]"
+                      name="InDew" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InHeat]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InHeat]"
+                      name="InHeat" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InEMC]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InEMC]"
+                      name="InEMC" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InAirDensity]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[InAirDensity]"
+                      name="InAirDensity" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ET]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ET]"
+                      name="ET" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindSamp]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindSamp]"
+                      name="WindSamp" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindTx]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[WindTx]"
+                      name="WindTx" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ISSRecept]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ISSRecept]"
+                      name="ISSRecept" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ArcInt]"
+                      dataType="r8"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ArcInt]"
+                      name="ArcInt" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Load Data Into Table.Paths[Excel Source Output]"
+              endId="Package\Load Data Into Table\Insert Weather related columns into Weather Table.Inputs[OLE DB Destination Input]"
+              name="Excel Source Output"
+              startId="Package\Load Data Into Table\Load Dataset.Outputs[Excel Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{84D91EFF-62C2-4854-964D-95915C410CE4}"
+      DTS:From="Package\Clear Weather Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Load Data Into Table" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="174.4,41.6"
+          Id="Package\Clear Weather Table"
+          TopLeft="185.83332594898,73.6666672521167" />
+        <NodeLayout
+          Size="175.2,41.6"
+          Id="Package\Load Data Into Table"
+          TopLeft="182.499992748102,168.133334669537" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="271.566659348541,115.266667252117">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52.8666674174202"
+              Start="0,0"
+              End="0,45.3666674174202">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.3666674174202" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Load Data Into Table">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="140,41.6"
+          Id="Package\Load Data Into Table\Load Dataset"
+          TopLeft="220.833324558205,59.8000004752478" />
+        <NodeLayout
+          Size="312.8,41.6"
+          Id="Package\Load Data Into Table\Insert Weather related columns into Weather Table"
+          TopLeft="138.333327836461,148.200001177788" />
+        <EdgeLayout
+          Id="Package\Load Data Into Table.Paths[Excel Source Output]"
+          TopLeft="292.783326197333,101.400000475248">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,46.80000070254"
+              Start="0,0"
+              End="0,39.30000070254">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,39.30000070254" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Data Into Table\Load Dataset">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Data Into Table\Insert Weather related columns into Weather Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
